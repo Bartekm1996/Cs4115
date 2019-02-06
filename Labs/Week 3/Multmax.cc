@@ -13,7 +13,7 @@ int main(int argc, char **argv){
 
     if(argc != 5){
         std::cerr << "Error :  5 arguments required - Dim of Mat A & Dim of Mat B" << std::endl;
-        exit(EXIT_FAILURE);
+        return -1;
     }else {
         if(validateMatrixInputSize(argv)){
                 
