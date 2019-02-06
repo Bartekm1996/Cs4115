@@ -1,5 +1,4 @@
 #include <iostream>
-#include <type_traits>
 #include <iomanip>
 
 bool validateMatrixInputSize(char**);
