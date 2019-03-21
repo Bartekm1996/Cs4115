@@ -291,21 +291,9 @@ void matmult(linked_list &a,linked_list &b,linked_list &c){
 }
 
 int main(int argc,char **argv){
-
-    int power = 0;
-    double epsilon = 0;
-    bool eps = false;
     
-    if(argc != 1 && argc != 2){
-
-        cerr << "Incorrect number of arguments given \nFormat Required : eg -> ./matz -e 0.25 < name_of_file " << endl;
-        exit(1);
-    
-    }else{
-    
-       
-        linked_list a = readFromCin(eps,epsilon);
-        linked_list c = a;
+   linked_list a = readFromCin(eps,epsilon);
+   linked_list c = a;
                     c.transpose();
         linked_list b;
         matmult(a,c,b);
@@ -313,9 +301,5 @@ int main(int argc,char **argv){
         a.clear();
                    
                    
-    }
-
-    
-
     return 0;
 }
