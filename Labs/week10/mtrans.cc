@@ -220,19 +220,11 @@ linked_list readFromCin(bool eps,double epsilon){
         istringstream lstream(inputLine);
         nz next;
         while(lstream >> next){
-            if(eps){ 
-                if(next.getNumber() != 0 && (next.getNumber() > epsilon || next.getNumber() < epsilon*-1 )){
-                        next.setRowPos(rows);
-                        row.push_back(next);
-          
-                }
-            }else{
                 if(next.getNumber() != 0)
                 {
                         next.setRowPos(rows);
                         row.push_back(next);  
                 }
-            }
         }
         rows++;
     }
