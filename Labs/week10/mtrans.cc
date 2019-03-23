@@ -210,7 +210,7 @@ void printMatrix(linked_list &a){
             cout << stream.str();
 }
 
-linked_list readFromCin(bool eps,double epsilon){
+linked_list readFromCin(){
 
     string inputLine = "";
     linked_list row;
@@ -284,10 +284,10 @@ void matmult(linked_list &a,linked_list &b,linked_list &c){
 
 int main(int argc,char **argv){
     
-   linked_list a = readFromCin(eps,epsilon);
+   linked_list a = readFromCin();
    linked_list c = a;
                     c.transpose();
-        linked_list b;
+   linked_list b;
         matmult(a,c,b);
         printMatrix(b);
         a.clear();
