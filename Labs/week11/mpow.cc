@@ -287,11 +287,19 @@ int main(int argc,char **argv){
    if(argc != 2){
        cerr << "Wromg format required power of mat " << endl; 
    }else{ 
+       
+    int power = 0;
+        std::istringstream iss (*(argv+1));
+    iss >> power;
     
+
+    if(power <= 0){
+        cerr << "Wrong power input " << endl;
+        exit(0);
+    }
+
     linked_list a = readFromCin();
     linked_list c;
-
-    int power = atoi(*(argv+1));
     if(power == 1){
         matmult(a,a,c);
     }else if(power > 1){
@@ -303,6 +311,6 @@ int main(int argc,char **argv){
         printMatrix(c);
         a.clear();
                    
-   }               
+   }              
     return 0;
 }
