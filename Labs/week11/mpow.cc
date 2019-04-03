@@ -258,28 +258,25 @@ double **matrix(linked_list &a){
     return array;
 }
 
-void matmult(linked_list &a,linked_list &b,linked_list &c){
-   
+void matmult(linked_list &a,linked_list &b,linked_list &c, int power){
+    
     double **arrayA = matrix(a); 
-    double **arrayB = matrix(b);
     int rows_of_a = MAX(a.getMaxRow(),a.getRowsCount());
-    int rows_of_b = MAX(b.getMaxRow(),b.getRowsCount());
-    int cols_of_b = b.getMaxCol();
     int cols_of_a = a.getMaxCol();
     c.clear();
     double product = 0;
     for(int i = 0; i < rows_of_a; i++){
-            for(int j = 0; j < cols_of_b; j++){
+            for(int j = 0; j < cols_of_a; j++){
                 for(int k = 0; k < cols_of_a; k++){
-                    product += (arrayA[i][k]*arrayB[k][j]);
+                    product += (arrayA[i][k]*arrayA[k][j]);
                 }
+                product = pow(product,power);
                 c.push_back(nz(product,i+1,j+1));
                 product = 0;
             }
     }
     clearMatrix(rows_of_a,cols_of_a,arrayA,false);
-    clearMatrix(rows_of_b,cols_of_b,arrayB,false);
- 
+   
 }
 
 int main(int argc,char **argv){
@@ -293,21 +290,11 @@ int main(int argc,char **argv){
     iss >> power;
     
 
-    if(power <= 0){
-        cerr << "Wrong power input " << endl;
-        exit(0);
-    }
-
+  
     linked_list a = readFromCin();
     linked_list c;
-    if(power == 1){
-        matmult(a,a,c);
-    }else if(power > 1){
-        matmult(a,a,c);
-        for(int i = 0; i < power-1; i++){
-            matmult(a,c,c);
-        }    
-    }
+     matmult(a,a,c,power);
+ 
         printMatrix(c);
         a.clear();
                    
