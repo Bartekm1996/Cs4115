@@ -265,18 +265,17 @@ void matmult(linked_list &a,linked_list &b,linked_list &c, int power){
     int cols_of_a = a.getMaxCol();
     c.clear();
     double product = 0;
-    for(int i = 0; i < rows_of_a-1; i++){
+    for(int i = 0; i < rows_of_a; i++){
             for(int j = 0; j < cols_of_a; j++){
                 for(int k = 0; k < cols_of_a; k++){
                     product += (arrayA[i][k]*arrayA[k][j]);
                 }
                 product = pow(product,power);
                 if(product != 0){
-                    cout << i+1 << " " << product;
+                    c.push_back(nz(product,i+1,j+1));
                 }
                 product = 0;
             }
-            cout << endl;
     }
     clearMatrix(rows_of_a,cols_of_a,arrayA,false);
    
@@ -292,12 +291,25 @@ int main(int argc,char **argv){
         std::istringstream iss (*(argv+1));
     iss >> power;
     
+      linked_list a = readFromCin();
+      linked_list c;
+ 
+    if(power == 0){
+        int rows_of_a = MAX(a.getMaxRow(),a.getRowsCount());
+        for(int i = 0; i < rows_of_a-1; i++){
+            cout << i+1 << " " << 1 << endl;
+        }
+    }
+    else if(power == 1){
+        printMatrix(a);
+    }else if(power > 1){
+        matmult(a,a,c,power-1);
+        printMatrix(c);
+
+    }
 
   
-    linked_list a = readFromCin();
-    linked_list c;
-    matmult(a,a,c,power);
- 
+  
         a.clear();
                    
    }              
