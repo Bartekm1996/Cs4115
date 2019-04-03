@@ -265,15 +265,18 @@ void matmult(linked_list &a,linked_list &b,linked_list &c, int power){
     int cols_of_a = a.getMaxCol();
     c.clear();
     double product = 0;
-    for(int i = 0; i < rows_of_a; i++){
+    for(int i = 0; i < rows_of_a-1; i++){
             for(int j = 0; j < cols_of_a; j++){
                 for(int k = 0; k < cols_of_a; k++){
                     product += (arrayA[i][k]*arrayA[k][j]);
                 }
                 product = pow(product,power);
-                c.push_back(nz(product,i+1,j+1));
+                if(product != 0){
+                    cout << i+1 << " " << product;
+                }
                 product = 0;
             }
+            cout << endl;
     }
     clearMatrix(rows_of_a,cols_of_a,arrayA,false);
    
@@ -293,9 +296,8 @@ int main(int argc,char **argv){
   
     linked_list a = readFromCin();
     linked_list c;
-     matmult(a,a,c,power);
+    matmult(a,a,c,power);
  
-        printMatrix(c);
         a.clear();
                    
    }              
