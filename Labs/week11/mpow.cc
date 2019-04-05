@@ -84,6 +84,8 @@ class linked_list{
         node *head;
         int size;
         int rowsCount;
+        double maxNumber;
+        bool identityMatrix;
     public:
 
         linked_list(){head = nullptr;}
@@ -126,6 +128,14 @@ class linked_list{
             return max;
         }
 
+        double getMaxNumber(){
+            return this->maxNumber;
+        }
+
+        void setMaxNumber(double maxNumber){
+            this->maxNumber = maxNumber;
+        }
+
         bool isEmpty(){
             return head == nullptr;
         }
@@ -157,6 +167,13 @@ class linked_list{
             return this->rowsCount;
         }
 
+        void setIdenttityMatrix(bool set){
+            this->identityMatrix = set;
+        }
+
+        bool IdenttityMatrix(){
+            return this->identityMatrix;
+        }
 
         void reverse() { 
        
@@ -193,11 +210,11 @@ void printMatrixTranspose(linked_list &a,int rows){
             cout << stream.str();
 }
 
-void printMatrix(linked_list &a){
+void printMatrix(linked_list &a,int plus){
         ostringstream stream;
         a.reverse();
-        int row = MAX(a.getMaxRow(),a.getRowsCount())+1;
-            for(int i = 1; i < row ; i++){
+        int row = MAX(a.getMaxRow(),a.getRowsCount());
+            for(int i = 1; i < row+plus ; i++){
             node *current = a.getNode();
             while(current != nullptr){
                     if(current->data.getRowPos() == i){
@@ -222,7 +239,8 @@ linked_list readFromCin(){
 
     string inputLine = "";
     linked_list row;
-    int rows = 1;
+    int rows = 1, colsPos = 0, rowPos = 0;
+    double prev = 0, number = 0;
 
     while(getline(cin,inputLine)){
         istringstream lstream(inputLine);
@@ -231,12 +249,31 @@ linked_list readFromCin(){
                 if(next.getNumber() != 0)
                 {
                         next.setRowPos(rows);
-                        row.push_back(next);  
+                        row.push_back(next);
+                        if(next.getColPos() == next.getRowPos() && (next.getNumber() == 1 || next.getNumber() == -1)){
+                            colsPos++;rowPos++;
+                        }
                 }
         }
         rows++;
     }
            row.setRowsCount(rows);
+
+            node *current = row.getNode();
+            number = current->data.getNumber();
+            while(current != nullptr){
+                if(current -> next != nullptr)prev = current -> next -> data.getNumber();
+                if(prev > number)number = prev;
+                current = current -> next;
+            }
+            row.setMaxNumber(number);
+
+            if(rowPos == colsPos && (row.getMaxNumber() == 1 || row.getMaxNumber() == -1)){
+                row.setIdenttityMatrix(true);
+            }else{
+                row.setIdenttityMatrix(false);
+            }
+    
     return row;
 }
 
@@ -289,6 +326,29 @@ void matmult(linked_list &a,linked_list &b,linked_list &c){
     clearMatrix(rows_of_b,cols_of_b,arrayB,false);
 }
 
+/*
+vector<int> powerReturn(int power){
+
+    vector<int> powers;
+    int powerOfTwo = 2,i = 0;
+    while(power > 1){
+
+            while(true){
+                powerOfTwo = 2 * powerOfTwo;
+                i++;
+                if((powerOfTwo * 2) > power)break;
+            }
+            power = power - powerOfTwo;
+            powerOfTwo = 2;
+            powers.push_back(i);
+            i = 0;
+    }
+
+    
+    return powers;
+}
+*/
+
 int main(int argc,char **argv){
     
    if(argc != 2){
@@ -296,16 +356,19 @@ int main(int argc,char **argv){
    }else{ 
        
     int power = 0;
-        std::istringstream iss (*(argv+1));
+        istringstream iss (*(argv+1));
     iss >> power;
     
       linked_list a = readFromCin();
       linked_list c;
- 
+
     if(power < 0){
         cerr << "Illegal exponent; exiting" << endl;
         exit(0);
     }else{
+
+        
+ 
     if(power == 0){
         int rows_of_a = MAX(a.getMaxRow(),a.getRowsCount());
         for(int i = 0; i < rows_of_a-1; i++){
@@ -313,34 +376,31 @@ int main(int argc,char **argv){
         }
     }
     else if(power == 1){
-        printMatrix(a);
+        printMatrix(a,0);
     }else if(power > 1){
-            power = power - 2;
-            if(power % 2 == 0){
-                matmult(a,a,c);
-                linked_list d;
-                copy(c,d);
-                for(int i = 0; i < power/2; i++){
-                    matmult(c,d,c);
-                }   
-            }else{
-                matmult(a,a,c);
-                linked_list d;
-                copy(c,d);
-                for(int i = 0; i < power/2; i++){
-                    matmult(c,d,c);
-                }  
-                matmult(c,a,c);
-            }
-            printMatrix(c);
-    }
-   
-    }
-
-
-
-        a.clear();
-                   
+        
+            if(a.IdenttityMatrix() && a.getMaxNumber() == 1){
+                printMatrix(a,0);
+            }else if(a.IdenttityMatrix() && a.getMaxNumber() == -1){
+                if(power % 2 == 0){
+                    node *current_node = a.getNode();
+                    while(current_node != nullptr){
+                        current_node->data.setNumber(current_node->data.getNumber()*-1);
+                        current_node = current_node->next;
+                    }
+                    printMatrix(a,0);
+                }else{
+                    printMatrix(a,0);
+                }
+            }else{ 
+               matmult(a,a,c);
+               for(int j = 0; j < power - 2 ; j++){
+                   matmult(c,a,c);
+               }
+               printMatrix(c,1);
+           } 
+    }}
+        a.clear();              
    }              
     return 0;
 }
