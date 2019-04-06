@@ -326,28 +326,6 @@ void matmult(linked_list &a,linked_list &b,linked_list &c){
     clearMatrix(rows_of_b,cols_of_b,arrayB,false);
 }
 
-/*
-vector<int> powerReturn(int power){
-
-    vector<int> powers;
-    int powerOfTwo = 2,i = 0;
-    while(power > 1){
-
-            while(true){
-                powerOfTwo = 2 * powerOfTwo;
-                i++;
-                if((powerOfTwo * 2) > power)break;
-            }
-            power = power - powerOfTwo;
-            powerOfTwo = 2;
-            powers.push_back(i);
-            i = 0;
-    }
-
-    
-    return powers;
-}
-*/
 
 int main(int argc,char **argv){
     
@@ -368,7 +346,6 @@ int main(int argc,char **argv){
     }else{
 
         
- 
     if(power == 0){
         int rows_of_a = MAX(a.getMaxRow(),a.getRowsCount());
         for(int i = 0; i < rows_of_a-1; i++){
